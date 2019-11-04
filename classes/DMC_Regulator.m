@@ -6,8 +6,8 @@ classdef DMC_Regulator < AbstractRegulator
 	
 	methods
 		function self = DMC_Regulator(object, workpoint, s, D, N, Nu, lambda, psii, umin, umax, dumax)
-			ny = object.ny;
-			nu = object.nu;
+			ny = 1;
+			nu = 1;
 			
 			S = self.build_S(ny, nu, s, D);
 			M = self.build_M(ny, nu, N, Nu, S);
@@ -18,7 +18,7 @@ classdef DMC_Regulator < AbstractRegulator
 			self.delta_Up = zeros((D-1) * nu, 1);
 			self.Ek = zeros(N * ny,1);
 			
-			self.Uk = workpoint.u';
+			self.Uk = workpoint.u0';
 			self.N = N;
 			
 			self.ny = ny;
@@ -74,7 +74,7 @@ classdef DMC_Regulator < AbstractRegulator
 				Sl = zeros(ny, nu);
 				for i = 1 : ny
 					for j = 1 : nu
-						Sl{i, j} = s{i, j}(l);               
+						Sl(i, j) = s{i, j}(l);               
 					end
 				end
 				S{l} = Sl;

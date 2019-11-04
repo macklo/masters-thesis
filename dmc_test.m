@@ -6,56 +6,50 @@ addpath('./abstraction')
 addpath('./classes')
 addpath('./..')
 
-consts
+x0 = [5.50677; 0.132906; 0.0019752; 49.3818];
+u0 = 0.016783;
 
-obj = NonlinearReactor();
+y0 = x0(4)/x0(3);
 
-workpoint = struct('u', [2; 15], 'y', [0.2646; 393.9521], 'd', [323; 365]);
-obj.resetToWorkPoint(workpoint);
+workpoint = struct('x0', x0, 'u0', u0, 'y0', y0, 't0', 0);
+obj = Reactor(workpoint);
 
-umin = [0.1; 0.1];
-umax = [4; 30];
-dumax = [1; 2];
+umin = 0.01;
+umax = 0.02;
+dumax = 0.1;
 
-D = 800;
-N = 100;
-Nu = 80;
-lambda = [2 0.1];
+D = 200;
+N = 200;
+Nu = 200;
+lambda = 1000;
 psii = 1;
-sim_length = 6000;
-load("data/setPoints.mat")
-% setPoints = build_random_setpoints_array(workpoint, sim_length, 300, [0.2 385] , [0.3 400]);
+sim_length = 3000;
+
+setPoints = build_random_setpoints_array(workpoint, sim_length, 300, 24900 , 25100);
 
 load('./data/s.mat', 's');
 reg = DMC_Regulator(obj, workpoint, s, D, N, Nu, lambda, psii, umin, umax, dumax);
-nreg = Numeric_DMC_Regulator(obj, workpoint, s, D, N, Nu, lambda, psii, umin, umax, dumax);
 
-u = workpoint.u.*ones(obj.nu, sim_length);
-y = workpoint.y.*ones(obj.ny, sim_length);
+u = workpoint.u0.*ones(1, sim_length);
+y = workpoint.y0.*ones(1, sim_length);
+output = workpoint.y0;
 
 for k = 1:sim_length
 	k
-    output = obj.getOutput();
+    
     y(:, k) = output;
     control = reg.calculate(output, setPoints(:, k));
     u(:, k) = control';
-    obj.setControl(control);
-    obj.nextIteration();
+    obj.nextIteration(control);
+	output = obj.x(end, 4)/obj.x(end, 3);
 end
 
 figure;
-for i = 1:2
-    subplot(2, 1, i);
-		stairs(u(i, :), 'r');
-end
+	stairs(u, 'r');
 
 figure;
-for i = 1:2
-    subplot(2, 1, i);
-        hold on;
-        stairs(setPoints(i, :), 'b');
-		stairs(y(i, :), 'r');
-end
+	hold on;
+	stairs(setPoints, 'b');
+	stairs(y, 'r');
 
 e = (y - setPoints)*(y - setPoints)';
-e = [e(1, 1) e(2, 2)]
