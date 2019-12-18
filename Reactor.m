@@ -1,4 +1,4 @@
-classdef Reactor < handle
+classdef Reactor < AbstractObject
 	properties
 		Z_Tc = 3.8223e10;
 		Z_Td = 3.1457e11;
@@ -24,70 +24,73 @@ classdef Reactor < handle
 		C_min = 6.0;
 		T     = 335;
 		
-		Ts = 0.01;
 		workpoint
 		t = [];
 		x = [];
 		y = [];
 		u = [];
-		iteration = 1;
+		
+		uk, yk, xk, tk
 	end
 	
 	methods
-		function obj = Reactor(workpoint)
-			obj.workpoint = workpoint;
-% 			obj.x = workpoint.x0;
-% 			obj.t = workpoint.t0;
-% 			obj.y = workpoint.y0;
-% 			obj.u = workpoint.u0;
+		function self = Reactor(workpoint)
+			ny = 1; nu = 1; nd = 0; Ts = 0.01;
+			self@AbstractObject(ny, nu, nd, Ts);
+			
+			self.workpoint = workpoint;
+			self.uk = workpoint.u0;
+			self.yk = workpoint.y0;
+			self.xk = self.workpoint.x0;
+			self.tk = 0;
 		end
 		
-		function [y, t] = nextIteration(obj, u)
-			obj.t = [obj.t obj.t + obj.Ts];
+		function setControl(self, control)
+			self.uk = control;
+		end
+		
+		function [output] = getOutput(self)
+			output = self.yk;
+		end
+		
+		function [y, t] = nextIteration(self)
+			self.u = [self.u, self.uk];
+			self.t  = [self.t self.tk];
+			self.tk = self.tk + self.Ts;
 			
-			obj.u = [obj.u, u];
-			
-			if size(obj.x, 1) == 0
-				x = obj.workpoint.x0;
-			else
-				x = obj.x(end, :)';
-			end
-			
-			k1 = obj.Ts * obj.differential(x, u);
-			k2 = obj.Ts * obj.differential(x + k1/2, u);
-			k3 = obj.Ts * obj.differential(x + k2/2, u);
-			k4 = obj.Ts * obj.differential(x + k3, u);
+			k1 = self.Ts * self.differential(self.xk, self.uk);
+			k2 = self.Ts * self.differential(self.xk + k1/2, self.uk);
+			k3 = self.Ts * self.differential(self.xk + k2/2, self.uk);
+			k4 = self.Ts * self.differential(self.xk + k3, self.uk);
 
-			x = x + (k1 + 2*k2 + 2*k3 + k4)/6;
+			self.xk = self.xk + (k1 + 2*k2 + 2*k3 + k4)/6;
 			
-			obj.x = [obj.x ; x'];
+			self.x = [self.x ; self.xk'];
+			self.yk = self.xk(4)/self.xk(3);
+			
 		end
 		
-		function [t, x] = simulateODE(obj, x0, u0, t0, tfinal)
-			[t, x] = ode45(@(t, x) obj.differential(x, u0), t0:obj.Ts:tfinal, x0);
-		end
-		
-		function dx = differential(obj, x, u)
+		function dx = differential(self, x, u)
 			
-			P_0 = sqrt((2 * obj.f_p * x(2) * obj.Z_I * exp(-obj.E_I/(obj.R*obj.T))) ...
-				/(obj.Z_Td * exp(-obj.E_Td/(obj.R*obj.T)) + obj.Z_Tc * exp(-obj.E_Tc/(obj.R*obj.T))));
+			P_0 = sqrt((2 * self.f_p * x(2) * self.Z_I * exp(-self.E_I/(self.R*self.T))) ...
+				/(self.Z_Td * exp(-self.E_Td/(self.R*self.T)) + self.Z_Tc * exp(-self.E_Tc/(self.R*self.T))));
 			
-			dx1 = -(obj.Z_exp_ERT(obj.Z_P, obj.E_P) + obj.Z_exp_ERT(obj.Z_fm, obj.E_fm)) * x(1) * P_0 ...
-				- (obj.F * x(1)) / obj.V + (obj.F * obj.C_min) / obj.V;
+			dx1 = -(self.Z_exp_ERT(self.Z_P, self.E_P) + self.Z_exp_ERT(self.Z_fm, self.E_fm)) * x(1) * P_0 ...
+				- (self.F * x(1)) / self.V + (self.F * self.C_min) / self.V;
 			
-			dx2 = -(obj.Z_exp_ERT(obj.Z_I, obj.E_I) * x(2)) - (obj.F * x(2)) / obj.V + (u * obj.C_Iin) / obj.V;
+			dx2 = -(self.Z_exp_ERT(self.Z_I, self.E_I) * x(2)) - (self.F * x(2)) / self.V + (u * self.C_Iin) / self.V;
 			
-			dx3 = (0.5 * obj.Z_exp_ERT(obj.Z_Tc, obj.E_Tc) + obj.Z_exp_ERT(obj.Z_Td, obj.E_Td)) * P_0 * P_0 ...
-				+ obj.Z_exp_ERT(obj.Z_fm, obj.E_fm) * x(1) * P_0 - (obj.F * x(3)) / obj.V;
+			dx3 = (0.5 * self.Z_exp_ERT(self.Z_Tc, self.E_Tc) + self.Z_exp_ERT(self.Z_Td, self.E_Td)) * P_0 * P_0 ...
+				+ self.Z_exp_ERT(self.Z_fm, self.E_fm) * x(1) * P_0 - (self.F * x(3)) / self.V;
 			
-			dx4 = obj.M_m * (obj.Z_exp_ERT(obj.Z_P, obj.E_P) + obj.Z_exp_ERT(obj.Z_fm, obj.E_fm)) * x(1) * P_0 ...
-				- (obj.F * x(4)) / obj.V;
+			dx4 = self.M_m * (self.Z_exp_ERT(self.Z_P, self.E_P) + self.Z_exp_ERT(self.Z_fm, self.E_fm)) * x(1) * P_0 ...
+				- (self.F * x(4)) / self.V;
 			
 			dx = [dx1; dx2; dx3; dx4];
 		end
 		
-		function e = Z_exp_ERT(obj, Z, E)
-			e = Z * exp(-E / (obj.R*obj.T));
+		function e = Z_exp_ERT(self, Z, E)
+			e = Z * exp(-E / (self.R*self.T));
 		end
 	end
 end

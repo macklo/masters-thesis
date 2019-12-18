@@ -1,12 +1,13 @@
 classdef (Abstract) AbstractObject < handle
 	properties
-		ny,nu,Ts
+		ny,nu,nd,Ts
 	end
 	
 	methods
-		function self = AbstractObject(ny, nu, Ts)
+		function self = AbstractObject(ny, nu, nd, Ts)
 			self.ny = ny;
 			self.nu = nu;
+			self.nd = nd;
 			self.Ts = Ts;
 		end
 	end

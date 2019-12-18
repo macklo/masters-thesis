@@ -1,4 +1,4 @@
-% close all
+close all
 clear
 clc
 
@@ -17,7 +17,7 @@ workpoint = struct('x0', x0, 'u0', u0, 'y0', y0, 't0', 0);
 t0 = 0;
 tfinal = 1.5;
 
-r = Reactor(workpoint);
+r = LinearReactor(workpoint);
 
 figure
 	hold on
@@ -29,30 +29,24 @@ legends = [];
 uValues = [];
 jumps = -0.8:0.1:0.5;
 staticVals = [];
-xVals = {};
-workpoints = {};
 
 for mult = jumps
 	u = u0 + mult * u0;
 	uValues = [uValues; u];
 	legends = [legends u];
-% 	[t, x] = r.simulateODE(x0, u, t0, tfinal);
-% 	yODE = x(:,4)./x(:, 3);
-% 	stairs(t, yODE)
 	
-	react = Reactor(workpoint);
-	for t = t0:r.Ts:tfinal
+	react = LinearReactor(workpoint);
+	react.resetToWorkPoint(workpoint);
+	for t = 1:150
 		react.setControl(u);
 		react.nextIteration();
+		yRK(t) = react.getOutput();
 	end
 
 	x = react.x;
-	yRK = x(:,4)./x(:, 3);
 	
-	stairs(t0:r.Ts:tfinal, yRK)
+	stairs(yRK)
 	staticVals = [staticVals; yRK(end)];
-	xVals = [xVals, x(end, :)];
-	workpoints = [workpoints, struct('x0', x(end, :), 'u0', u, 'y0', yRK(end), 't0', 0)];
 end
 
 figure
