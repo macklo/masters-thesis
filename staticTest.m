@@ -1,4 +1,4 @@
-% close all
+close all
 clear
 clc
 
@@ -27,7 +27,7 @@ figure
 	ylabel('y')
 legends = [];
 uValues = [];
-jumps = -0.8:0.1:0.5;
+jumps = -0.9:0.01:3;
 staticVals = [];
 xVals = {};
 workpoints = {};
@@ -68,3 +68,5 @@ figure
 	title("Charakterystyka statyczna")
 	xlabel('u')
 	ylabel('y')
+	
+save("./data/staticValues.mat", "staticVals", "uValues")

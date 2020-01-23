@@ -8,8 +8,8 @@ classdef FuzzyReactor < AbstractObject
 		u, y, x
 		uk, yk, xk
 		
-		ymin = 16;
-		ymax = 66;
+		ymin = 20000;
+		ymax = 45000;
 		
 		x0 = []
 		t = 0
@@ -24,7 +24,7 @@ classdef FuzzyReactor < AbstractObject
 			self@AbstractObject(ny, nu, nd, Ts);
 			load("./data/workpoints.mat");
 			self.numberOfModels = numberOfModels;
-			self.mf = createMembershipFunction(numberOfModels, 20000, 45000, 0.005, 0);
+			self.mf = createMembershipFunction(numberOfModels, self.ymin, self.ymax, 0.005, 0);
 			self.linearModels = cell(1, numberOfModels);
 			for i = 1:numberOfModels
 				workpoint = workpoints{workPointIndexes(i)};
@@ -122,6 +122,17 @@ classdef FuzzyReactor < AbstractObject
 		function workpoint = calculateWorkpoint(self, y)
 			h1 = (self.alfa2 / self.alfa1)^2 * y;
 			workpoint = struct('x', [self.A1 * h1, self.C2 * y^2], 'u', self.alfa1 * sqrt(h1) - self.FD, 'y', y, 'h1', h1, 'h2', y);
+		end
+		
+		function [] = plotMembership(self)
+			vals = evalmf(self.mf, self.ymin:0.1:self.ymax);
+			figure
+			hold on
+			for i = 1:self.numberOfModels
+				plot(self.ymin:0.1:self.ymax, vals(i, :))
+			end
+			xlabel("y")
+			ylabel("\mu")
 		end
 	end
 end
