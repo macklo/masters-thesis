@@ -53,8 +53,7 @@ classdef WHReactor < AbstractObject
 			self.tk = self.tk + self.Ts;
 
 			
-			q = [self.y_static(end) self.y_static(end-1) self.y_static(end-2) ...
-				self.u(end) self.u(end-1) self.u(end-2) self.u(end-3)  ...
+			q = [self.y_static(end) self.y_static(end-1) self.y_static(end-2), ...
 				self.y(end) self.y(end-1) self.y(end-2) self.y(end-3)];
 % 			q1 == q
 			y = q*self.w;

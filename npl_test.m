@@ -18,9 +18,9 @@ umin = 0.0016;
 umax = 0.067;
 dumax = 0.004;
 
-N = 400;
-Nu = 400;
-lambda = 1e10;
+N = 500;
+Nu = 500;
+lambda = 1e9;
 
 sim_length = 500;
 
@@ -43,14 +43,13 @@ for k = 5:sim_length
     y(k) = obj.getOutput();
 	
 	q = [y_static(k-1) y_static(k-2) y_static(k-3), ...
-		u(k-1) u(k-2) u(k-3) u(k-4), ...
 		y(k-1) y(k-2) y(k-3) y(k-4)];
 					
 	w_l = zeros(size(object.w));
 	y_m = object.getOutput(q);
 	%2. Linearyzacja modelu
 	delta=1e-8;
-	for i = 1:11
+	for i = 1:7
 		q_tmp = q;
 		q_tmp(i) = q_tmp(i) + delta;
 		w_l(i) = (object.getOutput(q_tmp) - y_m)/delta;
@@ -82,28 +81,23 @@ for k = 5:sim_length
 	%7. Oblicz trajektorie swobodna
 	Y0 = zeros(N, 1);
 	q = [y_static(k-1) y_static(k-1) y_static(k-2) ...
-		u(k-1) u(k-1) u(k-2) u(k-3)  ...
 		y(k-1) y(k-1) y(k-2) y(k-3)];
 	Y0(1) = object.getOutput(q) + d;
 
 	q = [y_static(k-1) y_static(k-1) y_static(k-1) ...
-		u(k-1) u(k-1) u(k-1) u(k-2)  ...
 		Y0(1) y(k-1) y(k-2) y(k-3)];
 	Y0(2) = object.getOutput(q) + d;
 
 	q = [y_static(k-1) y_static(k-1) y_static(k-1) ...
-		u(k-1) u(k-1) u(k-1) u(k-1)  ...
 		Y0(2) Y0(1) y(k-1) y(k-2)];
 	Y0(3) = object.getOutput(q) + d;
 
 	q = [y_static(k-1) y_static(k-1) y_static(k-1) ...
-		u(k-1) u(k-1) u(k-1) u(k-1)  ...
 		Y0(3) Y0(2) Y0(1) y(k-1)];
 	Y0(4) = object.getOutput(q) + d;
 
 	for i =5:N
 		q = [y_static(k-1) y_static(k-1) y_static(k-1) ...
-			u(k-1) u(k-1) u(k-1) u(k-1)  ...
 			Y0(i-1) Y0(i-2) Y0(i-3) Y0(i-4)];
 		Y0(i) = object.getOutput(q) + d;
 	end

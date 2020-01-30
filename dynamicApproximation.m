@@ -58,9 +58,9 @@ figure
 		xlabel("t [h]")
 		%u(3:end)' u(2:end-1)' u(1:end-2)'
 Y = y(10:end)';
-M = [ y_static(9:end-1)' y_static(8:end-2)' y_static(7:end-3)'  u(9:end-1)' u(8:end-2)' u(7:end-3)' u(6:end-4)' y(9:end-1)' y(8:end-2)' y(7:end-3)' y(6:end-4)'];
+M = [ y_static(9:end-1)' y_static(8:end-2)' y_static(7:end-3)' y(9:end-1)' y(8:end-2)' y(7:end-3)' y(6:end-4)'];
 w = M\Y;
-% w = w/sum(w);
+w = w/sum(w);
 alfa = 0.05;
 y_m = workpoint.y0.*ones(1, sim_length);
 x = zeros(2, sim_length);
@@ -70,7 +70,7 @@ K = 2;
 
 for k = 10:sim_length
 	k
-	q = [y_static(k-1) y_static(k-2) y_static(k-3) u(k-1) u(k-2) u(k-3) u(k-4) y_m(k-1) y_m(k-2) y_m(k-3) y_m(k-4)];
+	q = [y_static(k-1) y_static(k-2) y_static(k-3) y_m(k-1) y_m(k-2) y_m(k-3) y_m(k-4)];
 	y_m(k) = q*w;
 end
 

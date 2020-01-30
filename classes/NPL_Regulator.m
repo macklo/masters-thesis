@@ -127,7 +127,7 @@ classdef NPL_Regulator < AbstractRegulator
 		
 		function s = getS(self, w)
 			
-			sim_length = 6+self.Nu*2;
+			sim_length = 6+self.Nu;
 			y_m = ones(1, sim_length) * self.y(end);
 			y_nl = ones(1, sim_length) * self.y(end);
 			
@@ -142,7 +142,7 @@ classdef NPL_Regulator < AbstractRegulator
 % 				q = [y_static(k-1) y_static(k-2) y_static(k-3) ...
 % 				u(k-1) u(k-2) u(k-3) u(k-4)  ...
 % 				y_m(k-1) y_m(k-2) y_m(k-3) y_m(k-4)];
-				q = [y_static(k-1) y_static(k-2) y_static(k-3) u(k-1) u(k-2) u(k-3) u(k-4) y_m(k-1) y_m(k-2) y_m(k-3) y_m(k-4)];
+				q = [y_static(k-1) y_static(k-2) y_static(k-3) y_m(k-1) y_m(k-2) y_m(k-3) y_m(k-4)];
 				
 				y_m(k) = q*w;
 % 				y_nl(k) = self.object.getOutput(q);
