@@ -8,7 +8,7 @@ maxIndex = size(uValues, 1);
 first = 1;
 last = 200;
 
-u = [uValues(first:last) ones(size(uValues(first:last)))];
+u = [uValues(first:last).^2 uValues(first:last) ones(size(uValues(first:last)))];
 y = staticVals(first:last);
 
 p = u\y;
@@ -25,12 +25,12 @@ figure
 startIndex = 1;
 endIndex   = 2;
 
-eps = 40000;
+eps = 20000;
 indexes = [];
 params = [];
 while true
 	while true 
-		u = [uValues(startIndex:endIndex) ones(size(uValues(startIndex:endIndex)))];
+		u = [uValues(startIndex:endIndex).^2 uValues(startIndex:endIndex) ones(size(uValues(startIndex:endIndex)))];
 		y = staticVals(startIndex:endIndex);
 		p = u\y;
 		ym = polyval(p, uValues(startIndex:endIndex));
@@ -61,7 +61,7 @@ for i = 1:size(indexes, 1)
 	plot(uValues(indexes(i, 1):indexes(i, 2)), ym)
 end
 
-mf = createMembershipFunctionFromCuts(uValues(indexes(2:end,1)), uValues(1), uValues(end), 10000);
+mf = createMembershipFunctionFromCuts(uValues(indexes(2:end,1)), uValues(1), uValues(end), 5000);
 
 ym =[];
 
