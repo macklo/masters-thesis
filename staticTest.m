@@ -27,7 +27,7 @@ figure
 	ylabel('y')
 legends = [];
 uValues = [];
-jumps = -0.9:0.01:3;
+jumps = -0.9:0.2:3;
 staticVals = [];
 xVals = {};
 workpoints = {};
@@ -69,4 +69,4 @@ figure
 	xlabel('u')
 	ylabel('y')
 	
-save("./data/staticValues.mat", "staticVals", "uValues")
+% save("./data/staticValues.mat", "staticVals", "uValues")

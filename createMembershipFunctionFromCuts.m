@@ -23,5 +23,8 @@ function [mf, linPoints] = createMembershipFunctionFromCuts(cuts, ymin, ymax, a)
 		for i = 1:numberOfModels
 			plot(ymin:0.00001:ymax, y(i, :))
 		end
+		xlabel("u")
+		ylabel("\mu")
+		title("Funkcje przynale¿noœci")
 end
 

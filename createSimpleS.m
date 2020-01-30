@@ -13,7 +13,7 @@ u0 = 0.016783;
 y0 = x0(4)/x0(3);
 
 workpoint = struct('x0', x0, 'u0', u0, 'y0', y0, 't0', 0);
-obj = Reactor(workpoint);
+react = Reactor(workpoint);
 
 sim_length = 2000;
 
@@ -24,11 +24,11 @@ u = workpoint.u0.*ones(1, sim_length);
 y = workpoint.y0.*ones(1, sim_length);
 u(start:end) = workpoint.u0 + 0.001;
 for k = 1:sim_length
-% 	y(:, k) = obj.getOutput();
-	obj.nextIteration(u(k));
+	react.setControl(u(k));
+	react.nextIteration();
 end
 
-y = obj.x(:,4)./obj.x(:, 3);
+y = react.x(:,4)./react.x(:, 3);
 
 s{1} = (y(start:end) - y(start-1))/0.001;
 
@@ -36,7 +36,3 @@ save('./data/s.mat', 's');
 figure;
     stairs(s{1, 1});
 	
-figure
-	stairs(obj.x(:,4)./obj.x(:, 3))
-figure
-	stairs(u)

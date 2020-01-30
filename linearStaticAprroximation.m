@@ -2,6 +2,11 @@ clc
 close all
 clear
 
+x0 = [5.50677; 0.132906; 0.0019752; 49.3818];
+u0 = 0.016783;
+
+y0 = x0(4)/x0(3);
+
 load("./data/staticValues.mat")
 
 maxIndex = size(uValues, 1);
@@ -25,7 +30,7 @@ figure
 startIndex = 1;
 endIndex   = 2;
 
-eps = 40000;
+eps = 200000;
 indexes = [];
 params = [];
 while true
@@ -36,7 +41,7 @@ while true
 		ym = polyval(p, uValues(startIndex:endIndex));
 		ep = (ym(1) - y(1))^2;
 		el = (ym(end) - y(end))^2;
-		e  = (ym-y)'*(ym-y);
+		e  = (ym-y)'*(ym-y) / (endIndex - startIndex);
 		if e > eps || endIndex == maxIndex
 			if endIndex == maxIndex - 1
 				endIndex = maxIndex;
@@ -55,13 +60,18 @@ while true
 end
 figure
 	hold on
+	for i = 1:size(indexes, 1)
+		ym = polyval(params(i, :), uValues(indexes(i, 1):indexes(i, 2)));
+		plot(uValues(indexes(i, 1):indexes(i, 2)), ym)
+	end
 	plot(uValues, staticVals);
-for i = 1:size(indexes, 1)
-	ym = polyval(params(i, :), uValues(indexes(i, 1):indexes(i, 2)));
-	plot(uValues(indexes(i, 1):indexes(i, 2)), ym)
-end
+	title("Modele liniowe na tle charakterystyki statycznej")
+	xlabel("u")
+	ylabel("y")
 
-mf = createMembershipFunctionFromCuts(uValues(indexes(2:end,1)), uValues(1), uValues(end), 10000);
+
+a = 3000;
+mf = createMembershipFunctionFromCuts(uValues(indexes(2:end,1)), uValues(1), uValues(end), 3000);
 
 ym =[];
 
@@ -75,11 +85,13 @@ for u = uValues'
 end
 
 err = (ym - staticVals)' * (ym - staticVals) / maxIndex;
-
 figure
 	hold on
 	plot(uValues, staticVals);
 	plot(uValues, ym);
+	legend("Zmierzone wartoœci", "Wartoœci z modelu")
+	xlabel ("u");
+	ylabel("y")
 	
 
 save("./data/fuzzyStaticModel.mat", "mf", "params");
