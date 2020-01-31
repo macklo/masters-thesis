@@ -35,4 +35,7 @@ s{1} = (y(start:end) - y(start-1))/0.001;
 save('./data/s.mat', 's');
 figure;
     stairs(s{1, 1});
+	title("Odpowiedü skokowa")
+	ylabel("y")
+	xlabel("k")
 	

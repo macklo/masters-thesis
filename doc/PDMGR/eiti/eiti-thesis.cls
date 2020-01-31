@@ -405,7 +405,11 @@
         \fi
         \ifnum \pdf@strcmp{\ThesisType}{Master} = 0
             \ifnum \pdf@strcmp{\@lang}{polish} = 0
-                \includegraphics[width=\textwidth]{eiti/title-mgr.png} \\
+                %\includegraphics[width=\textwidth]{eiti/title-mgr.png} \\
+                \begin{center}
+                	{\huge Pracownia Dyplomowa Magisterska}
+                \end{center}
+                
             \fi
             \ifnum \pdf@strcmp{\@lang}{english} = 0
                 \includegraphics[width=\textwidth]{eiti/title-mgr-eng.png} \\
@@ -418,12 +422,7 @@
         \ifnum \pdf@strcmp{\@lang}{english} = 0
             in~the~field~of~study \@kierunek \\
         \fi
-        \ifnum \pdf@strcmp{\@lang}{polish} = 0
-            w~specjalności \@specjalnosc \\
-        \fi
-        \ifnum \pdf@strcmp{\@lang}{english} = 0
-            and~specialisation \@specjalnosc \\
-        \fi
+        
         \hfill \break
         \hfill \break
         \large

@@ -1,6 +1,30 @@
 \boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
 \babel@toc {polish}{}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {1.1}{\ignorespaces Tradycyjne godło Politechniki Warszawskiej\relax }}{9}{figure.caption.2}%
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Schemat reaktora polimeryzacji\relax }}{3}{figure.caption.1}%
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {1.2}{\ignorespaces Współczesne logo Politechniki Warszawskiej\relax }}{10}{figure.caption.3}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Odpowiedzi obiektu na skoki sterowania\relax }}{5}{figure.caption.2}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Charakterystyka statyczna obiektu\relax }}{5}{figure.caption.3}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Funkcje przynależności dla modelu statycznego obiektu\relax }}{6}{figure.caption.4}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Funkcje przynależności dla modelu statycznego obiektu\relax }}{6}{figure.caption.5}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Wyjście rozmytego modelu statycznego\relax }}{7}{figure.caption.6}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Schemat modelu kaskadowego Hammersteina\relax }}{7}{figure.caption.7}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Odpowiedź skokowa obiektu\relax }}{8}{figure.caption.8}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Wyjście liniowego modelu dynamicznego\relax }}{9}{figure.caption.9}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Przebieg dla modelu Hammersteina\relax }}{9}{figure.caption.10}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Odpowiedź skokowa dla klasycznego algorytmu DMC\relax }}{10}{figure.caption.11}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Przebieg dla klasycznego algorytmu DMC\relax }}{11}{figure.caption.12}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Odpowiedź skokowa dla algorytmu DMC-SL\relax }}{11}{figure.caption.13}%
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Przebieg dla algorytmu DMC-SL\relax }}{12}{figure.caption.14}%

@@ -13,10 +13,9 @@
     bindingoffset=6mm,  % Optional binding offset.
     nohyphenation=false % You may turn off hyphenation, if don't like.
 ]{eiti/eiti-thesis}
-
+\usepackage{float}
 \langpol % Dla języka angielskiego mamy \langeng
 \graphicspath{{img/}}             % Katalog z obrazkami.
-\addbibresource{bibliografia.bib} % Plik .bib z bibliografią
 
 \begin{document}
 
@@ -24,48 +23,26 @@
 % Strona tytułowa
 %--------------------------------------
 \MasterThesis % Dla pracy inżynierskiej mamy \EngineerThesis
-\instytut{XXXXXX}
-\kierunek{XXXXXX}
+\instytut{Informatyki i Automatyki Stosowanej}
+\kierunek{Automatyka i Robotyka}
 \specjalnosc{XXXXXX}
 \title{
-    Niepotrzebnie długi i skomplikowany tytuł pracy \\
-    trudny do przeczytania, zrozumienia i wymówienia
+    Modelowanie i sterowanie rozmyte nieliniowego obiektu
 }
 \engtitle{ % Tytuł po angielsku do angielskiego streszczenia
     Unnecessarily long and complicated thesis' title \\
     difficult to read, understand and pronounce
 }
-\author{\{Imię i Nazwisko\}}
-\album{XXXXXX}
-\promotor{XXXXXX}
+\author{Maciej Kłos}
+\album{270806}
+\promotor{dr inż. Piotr Marusak}
 \date{\the\year}
 \maketitle
 
 %--------------------------------------
-% Streszczenie po polsku
-%--------------------------------------
-\cleardoublepage % Zaczynamy od nieparzystej strony
-\streszczenie \lipsum[1-3]
-\slowakluczowe XXX, XXX, XXX
-
-%--------------------------------------
-% Streszczenie po angielsku
-%--------------------------------------
-\newpage
-\abstract \kant[1-3]
-\keywords XXX, XXX, XXX
-
-%--------------------------------------
-% Oświadczenie o autorstwie
-%--------------------------------------
-\cleardoublepage  % Zaczynamy od nieparzystej strony
-\pagestyle{plain}
-\makeauthorship
-
-%--------------------------------------
 % Spis treści
 %--------------------------------------
-\cleardoublepage % Zaczynamy od nieparzystej strony
+\newpage
 \tableofcontents
 
 %--------------------------------------
@@ -74,20 +51,13 @@
 \cleardoublepage % Zaczynamy od nieparzystej strony
 \pagestyle{headings}
 
-\input{tex/1-wstep}         % Wygodnie jest trzymać każdy rozdział w osobnym pliku.
-\input{tex/2-de-finibus}    % Umożliwia to również łatwą migrację do nowej wersji szablonu:
-\input{tex/3-code-listings} % wystarczy podmienić swoje pliki main.tex i eiti-thesis.cls
-                            % na nowe wersje, a cały tekst pracy pozostaje nienaruszony.
+\input{tex/1-cel-pracy}     
+\input{tex/2-opis-reaktora}   
+\input{tex/3-statyka} 
+\input{tex/4-model-hammersteina} 
+\input{tex/5-sterowanie} 
 
 \newpage % Rozdziały zaczynamy od nowej strony
-\section{Summatio}          % Można też pisać rozdziały w jednym pliku.
-\lipsum[5-10]
-
-%--------------------------------------------
-% Literatura
-%--------------------------------------------
-\cleardoublepage % Zaczynamy od nieparzystej strony
-\printbibliography
 
 %--------------------------------------------
 % Spisy (opcjonalne)
@@ -106,25 +76,9 @@
 % zapewniając podstawowe formatowanie.
 % //AB
 \vspace{0.8cm}
-\acronymlist
-\acronym{EiTI}{Wydział Elektroniki i Technik Informacyjnych}
-\acronym{PW}{Politechnika Warszawska}
-\acronym{WEIRD}{ang. \emph{Western, Educated, Industrialized, Rich and Democratic}}
-
 \listoffigurestoc     % Spis rysunków.
 \vspace{1cm}          % vertical space
-\listoftablestoc      % Spis tabel.
-\vspace{1cm}          % vertical space
-\listofappendicestoc  % Spis załączników
 
-% Załączniki
-\newpage
-\appendix{Nazwa załącznika 1}
-\lipsum[1-8]
-
-\newpage
-\appendix{Nazwa załącznika 2}
-\lipsum[1-4]
 
 % Używając powyższych spisów jako szablonu,
 % możesz tu dodać swój własny wykaz bądź listę,
