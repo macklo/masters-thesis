@@ -1,5 +1,5 @@
 clear;
-close all;
+% close all;
 clc;
 
 addpath('./abstraction')
@@ -29,7 +29,7 @@ dumax = 0.004;
 D = 200;
 N = 200;
 Nu = 200;
-lambda = 1e8;
+lambda = 5e7;
 psii = 1;
 sim_length = 3000;
 

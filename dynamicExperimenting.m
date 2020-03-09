@@ -15,7 +15,7 @@ y0 = x0(4)/x0(3);
 workpoint = struct('x0', x0, 'u0', u0, 'y0', y0, 't0', 0);
 react = Reactor(workpoint);
 
-sim_length = 250;
+sim_length = 150;
 
 s = cell(1,1);
 
@@ -49,27 +49,27 @@ y = y/y(end)
 % 	plot(y)
 	
 Y = y(10:end)';
-M = [y(9:end-1)' y(8:end-2)' y(7:end-3)' y(6:end-4)' u(10:end)' u(9:end-1)' u(8:end-2)' u(7:end-3)' u(6:end-4)'];
+M = [y(9:end-1)' y(8:end-2)' u(9:end-1)' u(8:end-2)'];
 w = M\Y;
 
 y_m = y
 for k = 10:sim_length
 	k
-	q = [y_m(k-1) y_m(k-2) y_m(k-3) y_m(k-4) u(k) u(k-1) u(k-2) u(k-3) u(k-4)];
+	q = [y_m(k-1) y_m(k-2) u(k-1) u(k-2)];
 	y_m(k) = q*w;
 end
-% figure
-% 	subplot(2, 1, 1)
-% 		hold on;
-% 		stairs(y);
-% 		stairs(y_m);
-% 		title("Wyjœcie modelu")
-% 		ylabel("y")
-% 		legend("Wyjœcie obiektu", "Wyjœcie modelu")
-% 	
-% 	subplot(2, 1, 2)
-% 		stairs(u(1:sim_length));
-% 		ylabel("u")
+figure
+	subplot(2, 1, 1)
+		hold on;
+		stairs(y);
+		stairs(y_m);
+		title("Wyjœcie modelu")
+		ylabel("y")
+		legend("Wyjœcie obiektu", "Wyjœcie modelu")
+	
+	subplot(2, 1, 2)
+		stairs(u(1:sim_length));
+		ylabel("u")
 
 err = (y_m - y) * (y_m - y)' / sim_length;
 
@@ -78,11 +78,11 @@ utest = zeros*ones(1, sim_length);
 y_test = zeros*ones(1, sim_length);
 utest(50:end) = 1;
 for k = 5:sim_length
-	q = [y_test(k-1) y_test(k-2) y_test(k-3) y_test(k-4) utest(k) utest(k-1) utest(k-2) utest(k-3) utest(k-4)];
+	q = [y_test(k-1) y_test(k-2) utest(k-1) utest(k-2) ];
 	y_test(k) = q*w;
 end
 	
-% save("data/weights.mat", "w");
+save("data/weights.mat", "w");
 
 ys = 1;
 us = 1;
@@ -90,11 +90,11 @@ us = 1;
 u = u*us;
 
 wg = w;
-wg(1:4) = w(1:4);
-wg(5:end) = w(5:end)*ys/us;
+wg(1:2) = w(1:2);
+wg(3:end) = w(3:end)*ys/us;
 
 for k = 5:sim_length
-	q = [y_test(k-1) y_test(k-2) y_test(k-3) y_test(k-4) u(k) u(k-1) u(k-2) u(k-3) u(k-4)];
+	q = [y_test(k-1) y_test(k-2) u(k-1) u(k-2)];
 	y_test(k) = q*wg;
 end
 figure
@@ -103,39 +103,40 @@ subplot(2, 1, 1)
 subplot(2, 1, 2)
 	stairs(u)
 
-% ys = -11520;
-% us = 0.04845;
-% 
-% ys1 = -8692;
-% us1 = 0.02726;
-% 
-% u = u*us;
-% 
-% wt = w;
-% wt(1:4) = w(1:4);
-% wt(5:end) = w(5:end)*ys1/us1;
-% sim_length = 400;
-% utest = us*ones(1, sim_length);
-% y_test = ys*ones(1, sim_length);
-% y_static = ys*ones(1, sim_length);
-% utest(50:end) = us;
-% utest(200:end) = us1;
-% y_static(50:end) = ys;
-% y_static(200:end) = ys1;
-% 
-% for k = 5:sim_length
-% 	k
-% 	q = [y_test(k-1) y_test(k-2) y_test(k-3) y_test(k-4) utest(k) utest(k-1) utest(k-2) utest(k-3) utest(k-4)];
-% 	if utest(k) ~= 0
-% 		wt(5:end) = w(5:end)*((y_static(k))/(utest(k)));
-% 	end
-% 	
-% 	y_test(k) = q*wt;
-% end
-% figure
-% subplot(2, 1, 1)
-% 	hold on
-% 	stairs(y_test)
-% 	stairs(y_static)
-% subplot(2, 1, 2)
-% 	stairs(utest)
+	
+ys = -20;
+us = 8;
+
+ys1 = -10;
+us1 = 16;
+
+u = u*us;
+
+wt = w;
+wt(1:2) = w(1:2);
+wt(3:end) = w(3:end)*ys1/us1;
+sim_length = 400;
+utest = us*ones(1, sim_length);
+y_test = ys*ones(1, sim_length);
+y_static = ys*ones(1, sim_length);
+utest(50:end) = us;
+utest(200:end) = us1;
+y_static(50:end) = ys;
+y_static(200:end) = ys1;
+
+for k = 5:sim_length
+	k
+	q = [y_test(k-1) y_test(k-2) utest(k-1) utest(k-2)];
+	if utest(k) ~= 0
+		wt(5:end) = w(5:end)*((y_static(k))/(utest(k)));
+	end
+	
+	y_test(k) = q*wt;
+end
+figure
+subplot(2, 1, 1)
+	hold on
+	stairs(y_test)
+	stairs(y_static)
+subplot(2, 1, 2)
+	stairs(utest)

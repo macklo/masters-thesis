@@ -36,10 +36,10 @@ start= 5;
 for k = start:sim_length
 	y_static(k) = fuzzyStaticModel.getOutput(u(k)+u0)-y_static_0;
 	k
-	q = [y_m(k-1) y_m(k-2) y_m(k-3) y_m(k-4) u(k) u(k-1) u(k-2) u(k-3) u(k-4)];
+	q = [y_m(k-1) y_m(k-2) u(k-1) u(k-2)];
 	wtmp = w;
 	if u(k) ~= 0
-		wtmp(5:end) = w(5:end)*y_static(k)/u(k);
+		wtmp(3:end) = w(3:end)*y_static(k)/u(k);
 	end
 	y_m(k) = (q*wtmp);
 end
